@@ -19,7 +19,8 @@ module Anemone
       @links = [options[:links]].flatten if options.has_key?(:links)
       @hrefs = [options[:hrefs]].flatten if options.has_key?(:hrefs)
       @redirect = options[:redirect] if options.has_key?(:redirect)
-      
+      @post = options[:method] == :post
+
       create_body
       add_to_fakeweb
     end
@@ -45,7 +46,7 @@ module Anemone
         options[:location] = SPEC_DOMAIN + @redirect
       end
 
-      FakeWeb.register_uri(:get, SPEC_DOMAIN + @name, options)
+      FakeWeb.register_uri((@post ? :post : :get), SPEC_DOMAIN + @name, options)
     end
   end
 end

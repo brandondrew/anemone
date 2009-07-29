@@ -28,11 +28,11 @@ module Anemone
     #
     # Create a new Page from the response of an HTTP request to *url*
     #
-    def self.fetch(url)
-      begin
+    def self.fetch(url, postdata = nil)
+      #begin
         url = URI(url) if url.is_a?(String)
 
-        response, code, location = Anemone::HTTP.get(url)
+        response, code, location = postdata.nil? ? Anemone::HTTP.get(url) : Anemone::HTTP.post(url, postdata)
 
         aka = nil
         if !url.eql?(location)
@@ -40,9 +40,9 @@ module Anemone
         end
 
         return Page.new(url, response.body, code, response.to_hash, aka)
-      rescue
-        return Page.new(url)
-      end
+      #rescue
+      #  return Page.new(url)
+      #end
     end
     
     #
